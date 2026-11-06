@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies_app/models/models.dart';
 import 'package:movies_app/models/movie.dart';
+import 'package:movies_app/models/popular_response.dart';
 
 class MoviesProvider extends ChangeNotifier{
   String _baseUrl = 'api.themoviedb.org';
@@ -13,6 +14,8 @@ class MoviesProvider extends ChangeNotifier{
   String _page = '1';
 
   List<Movie> onDisplayMovie = [];
+  List<Movie> onPopularMovie = [];
+
 
   MoviesProvider() {
     print('MoviesProvider inicializat!');
@@ -37,5 +40,26 @@ class MoviesProvider extends ChangeNotifier{
 
     notifyListeners();
   }
+
+  getOnPopularMovies() async{
+    print('getOnPopularMovies');
+    var url = 
+    Uri.https(_baseUrl, '3/movie/popular',  {
+      'api_key': _apiKey,
+      'language':_language,
+      'page':_page
+    });
+
+    final result = await http.get(url);
+
+
+    final popularResponse = PopularResponse.fromJson(result.body);
+
+    onPopularMovie = popularResponse.results;
+
+    notifyListeners();
+  }
 }
+
+
 

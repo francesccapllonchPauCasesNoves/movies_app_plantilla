@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/models/movie.dart';
 
 class MovieSlider extends StatelessWidget {
-  const MovieSlider({super.key});
+  
+  final List<Movie> movies;
+
+  
+  const MovieSlider({Key? key, required this.movies}): super(key:key);
 
   // const MovieSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final size = MediaQuery.of(context).size;
+
+    if(this.movies.length == 0){
+      return Container(
+        width: double.infinity,
+        height: size.height*0.5,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return Container(
       width: double.infinity,
       height: 280,
       // color: Colors.red,
