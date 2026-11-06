@@ -1,8 +1,13 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/models/movie.dart';
 
 class CardSwiper extends StatelessWidget {
-  const CardSwiper({super.key});
+
+  final List<Movie> movies;
+  
+  const CardSwiper({Key? key, required this.movies}): super(key:key);
+  
 
   @override
   Widget build(BuildContext context) {
