@@ -62,11 +62,23 @@ class MoviesProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  getOnMovieCast(int isMovie) async{
+  Future<List<Cast>> getOnMovieCast(int isMovie) async{
 
 
     print('Demanam info al servidor!');
+    var url = 
+    Uri.https(_baseUrl, '3/movie/$isMovie/credits',  {
+      'api_key': _apiKey,
+      'language':_language
+    });
+    
+    final result = await http.get(url);
 
+    final creditsResponse = CreditsResponse.fromJson(result.body);
+
+    casting[isMovie] = creditsResponse.cast;
+
+    return creditsResponse.cast;
   }
 }
 

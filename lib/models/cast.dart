@@ -34,6 +34,14 @@ class Cast {
         this.job,
     });
 
+    get fullProfilePath{
+
+      if (this.profilePath != null){
+        return 'https://image.tmdb.org/t/p/w500${profilePath}';
+      }
+      return 'https//i.stack.imagur.com/GNx0.png';
+    }
+
     factory Cast.fromJson(String str) => Cast.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
