@@ -14,7 +14,7 @@ class MovieSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    if(this.movies.length == 0){
+    if(this.movies.isEmpty){
       return Container(
         width: double.infinity,
         height: size.height*0.5,
@@ -40,8 +40,8 @@ class MovieSlider extends StatelessWidget {
           Expanded(
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 20,
-                itemBuilder: (_, int index) => _MoviePoster()),
+                itemCount: movies.length,
+                itemBuilder: (_, int index) => _MoviePoster(movie:movies[index])),
           )
         ],
       ),
@@ -50,7 +50,10 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  const _MoviePoster({super.key});
+
+  final Movie movie;
+
+  const _MoviePoster({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +65,12 @@ class _MoviePoster extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: 'detalls peli'),
+                arguments: movie),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
                 placeholder: AssetImage('assets/no-image.jpg'),
-                image: NetworkImage('https://placehold.co/300x400/png'),
+                image: NetworkImage(movie.fullPosterPath),
                 width: 130,
                 height: 190,
                 fit: BoxFit.cover,
@@ -78,7 +81,7 @@ class _MoviePoster extends StatelessWidget {
             height: 5,
           ),
           Text(
-            'Star Wars: El retorno del Jedi',
+            movie.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

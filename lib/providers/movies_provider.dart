@@ -1,5 +1,4 @@
 
-import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +19,7 @@ class MoviesProvider extends ChangeNotifier{
   MoviesProvider() {
     print('MoviesProvider inicializat!');
     this.getOnDisplayMovies();
+    this.getOnPopularMovies();
   }
 
   getOnDisplayMovies() async{
