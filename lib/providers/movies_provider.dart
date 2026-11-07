@@ -15,6 +15,8 @@ class MoviesProvider extends ChangeNotifier{
   List<Movie> onDisplayMovie = [];
   List<Movie> onPopularMovie = [];
 
+  Map<int, List<Cast>> casting = {};
+
 
   MoviesProvider() {
     print('MoviesProvider inicializat!');
@@ -58,6 +60,13 @@ class MoviesProvider extends ChangeNotifier{
     onPopularMovie = popularResponse.results;
 
     notifyListeners();
+  }
+
+  getOnMovieCast(int isMovie) async{
+
+
+    print('Demanam info al servidor!');
+
   }
 }
 
