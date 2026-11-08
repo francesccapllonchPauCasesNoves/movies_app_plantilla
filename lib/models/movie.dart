@@ -35,10 +35,10 @@ class Movie {
         required this.voteCount,
     });
 
-    get fullPosterPath{
+    String get fullPosterPath{
 
-      if (this.posterPath != null){
-        return 'https://image.tmdb.org/t/p/w500${posterPath}';
+      if (posterPath != null){
+        return 'https://image.tmdb.org/t/p/w500$posterPath';
       }
       return 'https//i.stack.imagur.com/GNx0.png';
     }

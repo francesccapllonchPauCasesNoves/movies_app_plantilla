@@ -7,10 +7,10 @@ import 'package:movies_app/models/movie.dart';
 import 'package:movies_app/models/popular_response.dart';
 
 class MoviesProvider extends ChangeNotifier{
-  String _baseUrl = 'api.themoviedb.org';
-  String _apiKey = '3df87dc5ae283d06fdad09b889bd12a5';
-  String _language = 'es-ES';
-  String _page = '1';
+  final String _baseUrl = 'api.themoviedb.org';
+  final String _apiKey = '3df87dc5ae283d06fdad09b889bd12a5';
+  final String _language = 'es-ES';
+  final String _page = '1';
 
   List<Movie> onDisplayMovie = [];
   List<Movie> onPopularMovie = [];
@@ -20,11 +20,11 @@ class MoviesProvider extends ChangeNotifier{
 
   MoviesProvider() {
     print('MoviesProvider inicializat!');
-    this.getOnDisplayMovies();
-    this.getOnPopularMovies();
+    getOnDisplayMovies();
+    getOnPopularMovies();
   }
 
-  getOnDisplayMovies() async{
+  Future<void> getOnDisplayMovies() async{
     print('getOnDisplayMovies');
     var url = 
     Uri.https(_baseUrl, '3/movie/now_playing',  {
@@ -43,7 +43,7 @@ class MoviesProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  getOnPopularMovies() async{
+  Future<void> getOnPopularMovies() async{
     print('getOnPopularMovies');
     var url = 
     Uri.https(_baseUrl, '3/movie/popular',  {

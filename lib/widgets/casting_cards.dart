@@ -13,7 +13,7 @@ class CastingCards extends StatelessWidget {
 
     final moviesProvider = Provider.of<MoviesProvider>(context,listen: false);
 
-    FutureBuilder(
+    return FutureBuilder(
       future: moviesProvider.getOnMovieCast(idMovie),
         builder: ((BuildContext context, AsyncSnapshot<List<Cast>> snapshot){
           if(!snapshot.hasData){
@@ -22,9 +22,12 @@ class CastingCards extends StatelessWidget {
                 child: CircularProgressIndicator(),
               ),
             );
+
           }
 
           final casting = snapshot.data;
+
+          
           
           return Container(
             margin: const EdgeInsets.only(bottom: 30),
@@ -34,10 +37,8 @@ class CastingCards extends StatelessWidget {
             child: ListView.builder(
                 itemCount: 10,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) => _CastCard(casting[index])),
+                itemBuilder: (BuildContext context, int index) => _CastCard(casting![index])),
           );
-
-          
         } 
       ),
     );
@@ -45,6 +46,9 @@ class CastingCards extends StatelessWidget {
 }
 
 class _CastCard extends StatelessWidget {
+  final Cast card;
+
+  _CastCard(this.card);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,7 +61,7 @@ class _CastCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('assets/no-image.jpg'),
-              image: NetworkImage('https://placehold.co/150x300/png'),
+              image: NetworkImage(card.fullProfilePath),
               height: 140,
               width: 100,
               fit: BoxFit.cover,
@@ -67,7 +71,7 @@ class _CastCard extends StatelessWidget {
             height: 5,
           ),
           Text(
-            'Nom Actor',
+            card.name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

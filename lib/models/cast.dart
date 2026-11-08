@@ -34,10 +34,10 @@ class Cast {
         this.job,
     });
 
-    get fullProfilePath{
+    String get fullProfilePath{
 
-      if (this.profilePath != null){
-        return 'https://image.tmdb.org/t/p/w500${profilePath}';
+      if (profilePath != null){
+        return 'https://image.tmdb.org/t/p/w500$profilePath';
       }
       return 'https//i.stack.imagur.com/GNx0.png';
     }
@@ -50,7 +50,7 @@ class Cast {
         adult: json["adult"],
         gender: json["gender"],
         id: json["id"],
-        knownForDepartment: [json["known_for_department"]]!,
+        knownForDepartment: [json["known_for_department"]],
         name: json["name"],
         originalName: json["original_name"],
         popularity: json["popularity"]?.toDouble(),

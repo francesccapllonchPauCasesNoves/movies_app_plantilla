@@ -6,7 +6,7 @@ class MovieSlider extends StatelessWidget {
   final List<Movie> movies;
 
   
-  const MovieSlider({Key? key, required this.movies}): super(key:key);
+  const MovieSlider({super.key, required this.movies});
 
   // const MovieSlider({Key? key}) : super(key: key);
 
@@ -14,8 +14,8 @@ class MovieSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    if(this.movies.isEmpty){
-      return Container(
+    if(movies.isEmpty){
+      return SizedBox(
         width: double.infinity,
         height: size.height*0.5,
         child: Center(
@@ -24,7 +24,7 @@ class MovieSlider extends StatelessWidget {
       );
     }
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 280,
       // color: Colors.red,
@@ -53,7 +53,7 @@ class _MoviePoster extends StatelessWidget {
 
   final Movie movie;
 
-  const _MoviePoster({super.key, required this.movie});
+  const _MoviePoster({required this.movie});
 
   @override
   Widget build(BuildContext context) {

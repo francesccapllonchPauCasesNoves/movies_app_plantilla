@@ -6,15 +6,15 @@ class CardSwiper extends StatelessWidget {
 
   final List<Movie> movies;
   
-  const CardSwiper({Key? key, required this.movies}): super(key:key);
+  const CardSwiper({super.key, required this.movies});
   
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    if(this.movies.length == 0){
-      return Container(
+    if(this.movies.isEmpty){
+      return SizedBox(
         width: double.infinity,
         height: size.height*0.5,
         child: Center(
@@ -23,7 +23,7 @@ class CardSwiper extends StatelessWidget {
       );
     }
 
-    return Container(
+    return SizedBox(
         width: double.infinity,
         // Aquest multiplicador estableix el tant per cent de pantalla ocupada 50%
         height: size.height * 0.5,
