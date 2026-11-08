@@ -1,11 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:movies_app/models/movie.dart';
 import 'package:movies_app/providers/movies_provider.dart';
 
-class MoviesSearch extends SearchDelegate{
+class MoviesSearch extends SearchDelegate<Movie?> {
 
   final MoviesProvider moviesProvider;
+  String _lastQuery = '';
+  Future<List<Movie>>? _searchFuture;
 
   MoviesSearch(this.moviesProvider);
 
@@ -30,24 +31,56 @@ class MoviesSearch extends SearchDelegate{
 
   @override
   Widget buildResults(BuildContext context) {
-    return _movieResults();
+    final searchQuery = query.trim();
+    if (searchQuery.isEmpty) {
+      return const Center(child: Text('Escribe el título de una película'));
+    }
+
+    if (_lastQuery != searchQuery) {
+      _lastQuery = searchQuery;
+      _searchFuture = moviesProvider.getOnSearchedMovie(searchQuery);
+    }
+
+    return FutureBuilder<List<Movie>>(
+      future: _searchFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return const Center(child: Text('No se pudo realizar la búsqueda'));
+        }
+
+        final movies = snapshot.data ?? [];
+        if (movies.isEmpty) {
+          return const Center(child: Text('No se encontraron películas'));
+        }
+        return _movieResults(context, movies);
+      },
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return _movieResults();
-  }
+    if (query.trim().isEmpty) {
+      return const Center(child: Text('Busca una película por su título'));
+    }
 
-  Widget _movieResults() {
-    final filteredMovies = moviesProvider.onDisplayMovie.where((movie) {
-      final title = movie.title.toLowerCase();
-      return title.contains(query.toLowerCase());
+    final suggestions = moviesProvider.onDisplayMovie.where((movie) {
+      return movie.title.toLowerCase().contains(query.trim().toLowerCase());
     }).toList();
 
+    if (suggestions.isEmpty) {
+      return const Center(child: Text('Pulsa buscar para consultar TMDB'));
+    }
+    return _movieResults(context, suggestions);
+  }
+
+  Widget _movieResults(BuildContext context, List<Movie> movies) {
     return ListView.builder(
-      itemCount: filteredMovies.length,
+      itemCount: movies.length,
       itemBuilder: (context, index) {
-        final movie = filteredMovies[index];
+        final movie = movies[index];
         return ListTile(
           title: Text(movie.title),
           onTap: () {
@@ -56,5 +89,5 @@ class MoviesSearch extends SearchDelegate{
         );
       },
     );
-  }    
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/models/movie.dart';
 import 'package:movies_app/models/movies_search.dart';
 import 'package:movies_app/providers/movies_provider.dart';
 import 'package:movies_app/widgets/widgets.dart';
@@ -19,11 +20,13 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () {
-              showSearch(
+            onPressed: () async {
+              final movie = await showSearch<Movie?>(
                 context: context,
                 delegate: MoviesSearch(moviesProvider),
               );
+              if (!context.mounted || movie == null) return;
+              Navigator.pushNamed(context, 'details', arguments: movie);
             },
             icon: const Icon(Icons.search_outlined),
           )

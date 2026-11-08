@@ -83,23 +83,22 @@ class MoviesProvider extends ChangeNotifier{
     return creditsResponse.cast;
   }
 
-  Future<void> getOnSearchedMovie() async{
-    print('getOnSearchedMovie');
-    var url = 
-    Uri.https(_baseUrl, '3/search/movie',  {
+  Future<List<Movie>> getOnSearchedMovie(String query) async {
+    final url = Uri.https(_baseUrl, '3/search/movie', {
       'api_key': _apiKey,
       'language':_language,
+      'query': query,
     });
 
     final result = await http.get(url);
-
-
+    if (result.statusCode != 200) {
+      throw Exception('No s\'ha pogut completar la cerca de pel·lícules');
+    }
     final popularResponse = PopularResponse.fromJson(result.body);
-
     onSearchedMovie = popularResponse.results;
-
     notifyListeners();
-  } 
+    return onSearchedMovie;
+  }
 }
 
 
