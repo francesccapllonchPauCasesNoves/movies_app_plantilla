@@ -14,6 +14,8 @@ class MoviesProvider extends ChangeNotifier{
 
   List<Movie> onDisplayMovie = [];
   List<Movie> onPopularMovie = [];
+  List<Movie> onSearchedMovie = [];
+  
 
   Map<int, List<Cast>> casting = {};
 
@@ -87,7 +89,6 @@ class MoviesProvider extends ChangeNotifier{
     Uri.https(_baseUrl, '3/search/movie',  {
       'api_key': _apiKey,
       'language':_language,
-      'page':_page
     });
 
     final result = await http.get(url);
@@ -95,7 +96,7 @@ class MoviesProvider extends ChangeNotifier{
 
     final popularResponse = PopularResponse.fromJson(result.body);
 
-    onPopularMovie = popularResponse.results;
+    onSearchedMovie = popularResponse.results;
 
     notifyListeners();
   } 

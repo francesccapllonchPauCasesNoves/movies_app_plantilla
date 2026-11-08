@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/models/movies_search.dart';
 import 'package:movies_app/providers/movies_provider.dart';
 import 'package:movies_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -17,29 +18,32 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Cartellera'),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {
-            showSearch(
-              context: context, 
-              delegate: delegate)
-          }, icon: const Icon(Icons.search_outlined))
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: MoviesSearch(moviesProvider),
+              );
+            },
+            icon: const Icon(Icons.search_outlined),
+          )
         ],
       ),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              // Targetes principals
-              CardSwiper(movies: moviesProvider.onDisplayMovie),
+        child: Column(
+          children: [
+            // Targetes principals
+            CardSwiper(movies: moviesProvider.onDisplayMovie),
 
-              // Slider de pel·licules
-              MovieSlider(movies: moviesProvider.onPopularMovie,),
-              // Poodeu fer la prova d'afegir-ne uns quants, veureu com cada llista és independent
-              // MovieSlider(),
-              // MovieSlider(),
-            ],
-          ),
+            // Slider de pel·licules
+            MovieSlider(movies: moviesProvider.onPopularMovie),
+            // Poodeu fer la prova d'afegir-ne uns quants, veureu com cada llista és independent
+            // MovieSlider(),
+            // MovieSlider(),
+          ],
         ),
       ),
     );
   }
 }
+
