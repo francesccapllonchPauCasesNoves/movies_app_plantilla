@@ -80,6 +80,25 @@ class MoviesProvider extends ChangeNotifier{
 
     return creditsResponse.cast;
   }
+
+  Future<void> getOnSearchedMovie() async{
+    print('getOnSearchedMovie');
+    var url = 
+    Uri.https(_baseUrl, '3/search/movie',  {
+      'api_key': _apiKey,
+      'language':_language,
+      'page':_page
+    });
+
+    final result = await http.get(url);
+
+
+    final popularResponse = PopularResponse.fromJson(result.body);
+
+    onPopularMovie = popularResponse.results;
+
+    notifyListeners();
+  } 
 }
 
 

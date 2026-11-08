@@ -14,11 +14,11 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _CustomAppBar(),
+          _CustomAppBar(movie: peli,),
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                _PosterAndTitile(),
+                _PosterAndTitle(movie: peli,),
                 _Overview(movie: peli,),
                 CastingCards(peli.id),
               ],
@@ -31,6 +31,10 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class _CustomAppBar extends StatelessWidget {
+  final Movie movie;
+
+  const _CustomAppBar({super.key, required this.movie});
+  
   @override
   Widget build(BuildContext context) {
     // Exactament igual que la AppBaer però amb bon comportament davant scroll
@@ -48,13 +52,13 @@ class _CustomAppBar extends StatelessWidget {
           color: Colors.black12,
           padding: const EdgeInsets.only(bottom: 10),
           child: Text(
-            'Títol peli',
+            movie.title,
             style: TextStyle(fontSize: 16),
           ),
         ),
         background: FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage('https://placehold.co/500x300/png'),
+          image: NetworkImage(movie.fullPosterPath),
           fit: BoxFit.cover,
         ),
       ),
@@ -62,10 +66,10 @@ class _CustomAppBar extends StatelessWidget {
   }
 }
 
-class _PosterAndTitile extends StatelessWidget {
-  
+class _PosterAndTitle extends StatelessWidget {
+  final Movie movie;
 
-
+  const _PosterAndTitle({super.key, required this.movie});
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -78,7 +82,7 @@ class _PosterAndTitile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('assets/loading.gif'),
-              image: NetworkImage('https://placehold.co/200x300/png'),
+              image: NetworkImage(movie.fullPosterPath),
               height: 150,
             ),
           ),
@@ -88,13 +92,13 @@ class _PosterAndTitile extends StatelessWidget {
           Column(
             children: [
               Text(
-                'Títol peli',
+                movie.title,
                 style: textTheme.headlineSmall,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
               ),
               Text(
-                'Títol original',
+                movie.originalTitle,
                 style: textTheme.titleMedium,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
